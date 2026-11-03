@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Portal Administrasi GPAI Donomulyo</title>
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .bg-kubah {
+      background-image: linear-gradient(to bottom, rgba(5, 68, 52, 0.85), rgba(5, 68, 52, 0.4)), url('https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=1600');
+      background-size: cover;
+      background-position: center 35%;
+    }
+    .lengkung-bawah {
+      border-bottom-left-radius: 50% 40px;
+      border-bottom-right-radius: 50% 40px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- Halaman Login Utama -->
+  <div id="wrapper-login">
+    <!-- Header Bergambar Kubah Masjid -->
+    <div class="bg-kubah lengkung-bawah shadow-xl text-white pb-24 pt-6 px-4 text-center relative overflow-hidden">
+      <div class="max-w-4xl mx-auto flex justify-between items-center border-b border-white/20 pb-4 mb-8 text-[11px] tracking-widest font-bold uppercase">
+        <div>PORTAL ADMINISTRASI GPAI DONO...</div>
+        <div class="flex gap-4"></div>
+      </div>
+
+      <!-- Logo Lingkaran KKG PAI -->
+      <div class="mx-auto w-24 h-24 bg-white rounded-full shadow-lg mb-4 border border-amber-400 overflow-hidden flex items-center justify-center">
+        <img src="https://yt3.googleusercontent.com/qbT5qitdkSC4uQAgESXekjVfqGQIP2AHdMMLuENsq7QwUOX7NllQijZjqdVeZBbYHoj-3D-6Hw=s900-c-k-c0x00ffffff-no-rj" class="w-full h-full object-cover" alt="Logo KKG PAI">
+      </div>
+
+      <p class="text-xs font-serif italic text-amber-200 tracking-wide">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-wider mt-1 drop-shadow-md">PORTAL</h1>
+      <h2 class="text-lg md:text-xl font-bold tracking-widest text-amber-300 uppercase mt-0.5">Administrasi Guru PAI</h2>
+      <div class="inline-block bg-emerald-950/80 border border-emerald-700 text-[10px] font-bold tracking-widest px-4 py-1.5 rounded-full mt-3 text-emerald-300">
+        KKG PAI KECAMATAN DONOMULYO
+      </div>
+      <p class="text-[10px] text-slate-300 italic mt-3 font-medium">"Khairunnas Anfa'uhum Linnas"</p>
+    </div>
+
+    <!-- Kotak Form Login -->
+    <div class="max-w-md mx-auto -mt-16 px-4 relative z-10">
+      <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-6">
+        <h3 class="text-center text-sm font-bold text-slate-800 uppercase tracking-widest mb-4">Autentikasi Guru</h3>
+        
+        <!-- Pilihan Dropdown Nama Guru -->
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Pilih Nama Akun</label>
+          <div class="relative">
+            <select id="select-guru" onchange="isiPasswordOtomatis()" class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl px-3 py-3 font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-800 appearance-none cursor-pointer">
+              <option value="">-- Sedang memuat database guru... --</option>
+            </select>
+            <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-slate-400 text-xs">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Kata Sandi -->
+        <div class="mb-5">
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Kata Sandi</label>
+          <div class="relative">
+            <input type="password" id="input-password" placeholder="Masukkan sandi akun Anda" class="w-full text-sm bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-10 py-3 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-800">
+            <button type="button" onclick="intipSandi()" class="absolute inset-y-0 right-3 flex items-center text-slate-400 hover:text-slate-600">
+              <i id="ikon-mata" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tombol Masuk -->
+        <button onclick="prosesMasukAkun()" id="tombol-login" class="w-full bg-gradient-to-r from-emerald-900 to-emerald-800 text-white font-bold text-xs uppercase tracking-widest py-3.5 rounded-xl shadow-md hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+        </button>
+
+        <!-- Tombol Pendaftaran Akun Baru -->
+        <div class="mt-4 pt-3 border-t border-slate-100 text-center">
+          <button onclick="bukaModalRegister()" class="text-xs font-bold text-emerald-800 hover:text-emerald-950 transition flex items-center justify-center gap-1.5 mx-auto">
+            <i class="fa-solid fa-user-plus text-amber-500"></i> Belum punya akun? Buat Akun Baru
+          </button>
+        </div>
+
+        <div id="notif-gagal" class="hidden mt-3 bg-red-50 border border-red-200 text-red-700 text-xs px-3 py-2.5 rounded-xl text-center font-medium"></div>
+      </div>
+    </div>
+
+    <!-- Papan Pengumuman KKG -->
+    <div class="max-w-4xl mx-auto px-4 mt-8 mb-12">
+      <div class="bg-white rounded-2xl shadow-md p-5 border border-slate-100">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+          <h4 class="text-xs font-extrabold text-emerald-900 uppercase tracking-widest flex items-center gap-2">
+            <i class="fa-solid fa-bullhorn text-amber-500"></i> Papan Pengumuman KKG
+          </h4>
+        </div>
+        <div id="konten-pengumuman" class="space-y-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PENDAFTARAN AKUN BARU -->
+  <div id="modal-register" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-100 max-w-md w-full p-6 relative">
+      <button onclick="tutupModalRegister()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <h4 class="text-sm font-bold text-emerald-900 uppercase tracking-widest mb-1 flex items-center gap-2">
+        <i class="fa-solid fa-id-card text-amber-500"></i> Pendaftaran Guru PAI Baru
+      </h4>
+      <p class="text-xs text-slate-500 mb-4">Isi data di bawah ini untuk mendaftarkan akun portal baru.</p>
+
+      <form id="form-register-modal" onsubmit="handleRegistrasiBaru(event)" class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Nama Lengkap & Gelar</label>
+          <input type="text" id="reg-nama" required placeholder="Contoh: Ahmad, S.Pd.I" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-emerald-800">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Username (Tanpa Spasi)</label>
+          <input type="text" id="reg-user" required placeholder="Contoh: ahmad_pai" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-emerald-800">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Instansi Sekolah / NIP</label>
+          <input type="text" id="reg-jabatan" required placeholder="Contoh: SDN 1 Donomulyo" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-emerald-800">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Kata Sandi</label>
+          <input type="password" id="reg-pass" required placeholder="Buat kata sandi akun" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-emerald-800">
+        </div>
+
+        <button type="submit" id="btn-submit-reg" class="w-full mt-2 bg-gradient-to-r from-emerald-900 to-emerald-800 text-white font-bold text-xs uppercase tracking-widest py-3 rounded-xl shadow-md hover:brightness-110 transition">
+          Daftarkan Akun
+        </button>
+      </form>
+      <div id="notif-reg" class="hidden mt-3 text-xs p-2.5 rounded-xl text-center font-medium"></div>
+    </div>
+  </div>
+
+  <!-- Kaki Halaman -->
+  <footer class="bg-emerald-950 text-white text-center py-4 text-[10px] tracking-widest uppercase border-t-2 border-amber-400">
+    <div>© 2026 KKG PAI Kecamatan Donomulyo</div>
+    <div class="text-amber-400/70 font-medium lowercase mt-0.5">"khairunnas anfa'uhum linnas"</div>
+  </footer>
+
+  <script>
+    let dbGuru = [];
+    let dbPengumuman = [];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      google.script.run.withSuccessHandler(function(data) {
+        dbGuru = data.guru;
+        dbPengumuman = data.pengumuman;
+        
+        pasangDropdownGuru();
+        cetakPengumuman();
+      }).dapatkanDataPortal();
+    });
+
+    function pasangDropdownGuru() {
+      const select = document.getElementById('select-guru');
+      select.innerHTML = '<option value="">-- Cari / Pilih Nama Anda --</option>';
+      dbGuru.forEach((g, idx) => {
+        const opt = document.createElement('option');
+        opt.value = g.username;
+        opt.textContent = `${idx + 1}. ${g.nama} [${g.username}]`;
+        select.appendChild(opt);
+      });
+    }
+
+    function isiPasswordOtomatis() {
+      const user = document.getElementById('select-guru').value;
+      const pwInput = document.getElementById('input-password');
+      document.getElementById('notif-gagal').classList.add('hidden');
+      if (user) {
+        const akun = dbGuru.find(g => g.username === user);
+        if (akun) pwInput.value = akun.password;
+      } else {
+        pwInput.value = '';
+      }
+    }
+
+    function intipSandi() {
+      const input = document.getElementById('input-password');
+      const ikon = document.getElementById('ikon-mata');
+      if (input.type === 'password') {
+        input.type = 'text';
+        ikon.className = 'fa-solid fa-eye-slash';
+      } else {
+        input.type = 'password';
+        ikon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    function cetakPengumuman() {
+      const container = document.getElementById('konten-pengumuman');
+      container.innerHTML = '';
+      
+      if (!dbPengumuman || dbPengumuman.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-4">Belum ada pengumuman terbaru saat ini.</p>';
+        return;
+      }
+
+      dbPengumuman.forEach(p => {
+        const item = document.createElement('div');
+        item.className = "flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 gap-4";
+        let warnaBadge = p.tipe_warna === 'bahaya' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-blue-50 text-blue-700 border-blue-200';
+        
+        item.innerHTML = `
+          <div class="flex items-start gap-4">
+            <div class="bg-white border border-emerald-800 rounded-lg p-2 w-14 text-center shadow-sm flex flex-col justify-center items-center shrink-0">
+              <span class="text-lg font-black text-emerald-800 leading-none">${p.tanggal || '-'}</span>
+              <span class="text-[8px] font-bold text-slate-400 mt-1 uppercase">${p.bulan_tahun || ''}</span>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold text-slate-800">${p.judul || ''}</h5>
+              <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">${p.deskripsi || p.isi || ''}</p>
+            </div>
+          </div>
+          <div class="text-[8px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full border ${warnaBadge}">${p.label || 'INFO'}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function prosesMasukAkun() {
+      const user = document.getElementById('select-guru').value;
+      const sandi = document.getElementById('input-password').value;
+      const notif = document.getElementById('notif-gagal');
+      const btn = document.getElementById('tombol-login');
+
+      if (!user) {
+        notif.textContent = "Silakan pilih nama Anda terlebih dahulu.";
+        notif.classList.remove('hidden');
+        return;
+      }
+
+      const cocok = dbGuru.find(g => g.username === user && g.password.toString() === sandi.toString());
+
+      if (cocok) {
+        notif.classList.add('hidden');
+        const linkTujuan = cocok.link_pengaturan ? cocok.link_pengaturan.trim() : "";
+
+        if (linkTujuan && (linkTujuan.startsWith("http://") || linkTujuan.startsWith("https://"))) {
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Mengarahkan ke Halaman Anda...';
+          window.top.location.href = linkTujuan;
+        } else {
+          notif.textContent = "Login berhasil, tetapi kolom 'link_pengaturan' di tab Daftar_Guru belum diisi URL oleh Admin.";
+          notif.classList.remove('hidden');
+        }
+      } else {
+        notif.textContent = "Kata sandi salah. Silakan periksa kembali.";
+        notif.classList.remove('hidden');
+      }
+    }
+
+    function bukaModalRegister() {
+      document.getElementById('modal-register').classList.remove('hidden');
+    }
+    function tutupModalRegister() {
+      document.getElementById('modal-register').classList.add('hidden');
+      document.getElementById('notif-reg').classList.add('hidden');
+    }
+
+    function handleRegistrasiBaru(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-reg');
+      const notif = document.getElementById('notif-reg');
+      
+      const formData = {
+        nama: document.getElementById('reg-nama').value,
+        username: document.getElementById('reg-user').value,
+        jabatan: document.getElementById('reg-jabatan').value,
+        password: document.getElementById('reg-pass').value
+      };
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Menyimpan...';
+
+      google.script.run
+        .withSuccessHandler(function(res) {
+          btn.disabled = false;
+          btn.innerHTML = 'Daftarkan Akun';
+          notif.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-emerald-50', 'text-emerald-700');
+
+          if (res.success) {
+            notif.classList.add('bg-emerald-50', 'text-emerald-700');
+            notif.textContent = res.message;
+            document.getElementById('form-register-modal').reset();
+            
+            google.script.run.withSuccessHandler(function(data) {
+              dbGuru = data.guru;
+              pasangDropdownGuru();
+            }).dapatkanDataPortal();
+
+            setTimeout(() => tutupModalRegister(), 2000);
+          } else {
+            notif.classList.add('bg-red-50', 'text-red-700');
+            notif.textContent = res.message;
+          }
+        })
+        .buatAkunBaru(formData);
+    }
+  </script>
+</body>
+</html>
